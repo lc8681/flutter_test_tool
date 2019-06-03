@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:dio/dio.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,12 +45,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String result;
+  String result = '';
 
   void _resquestUrl() async {
-    var url = 'https://httpbin.org/ip';
-    var httpClient = new HttpClient();
-    setState(() {});
+    Response response = await Dio().get('http://39.96.16.125:8082/api/config/',
+        queryParameters: {"v": "1.0.1", "n": "1"});
+    setState(() {
+      result = '555555';
+    });
   }
 
   @override
@@ -80,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         'www.baidu.com',
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
-                      onPressed: () {},
+                      onPressed: _resquestUrl,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
@@ -91,7 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         'www.sina.com.cn',
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
-                      onPressed: _resquestUrl,
+                      onPressed: () {
+                        _resquestUrl();
+                      },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
@@ -99,12 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Text(
-                    '1111111111',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Flexible(
+                      child: Text(
+                        result,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ))
               ],
             )
 
